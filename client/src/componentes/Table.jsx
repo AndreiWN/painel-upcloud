@@ -42,7 +42,7 @@ function Table(props) {
                         <th>Nome</th>
                         <th>Tamanho</th>
                         <th>Dia</th>
-                        <th>Data De Execução</th>
+                        <th>Hora Da Execução</th>
                         <th>Tempo</th>
                         <th>Download</th>
                         <th>Enviar Por Email</th>

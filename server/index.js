@@ -3,8 +3,6 @@ const mysql = require('mysql2')
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-// const saltRounds = 10;
-// const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -84,10 +82,16 @@ app.post('/api/tokenLogin', (req, res) => {
     const token = req.body.token
 
     if (!token) {
-        res.status(401).send('Token não fornecido');
+        return res.status(401).send('Token não fornecido');
     }
 
-    const decoded = jwt.verify(token, secretKey);
+    let decoded;
+    try {
+        decoded = jwt.verify(token, secretKey);
+    } catch (err) {
+        return res.status(401).send('Token inválido');
+    }
+
     const userId = decoded.userId;
     let dadosUsuario = {};
     let dadosTarefas = {};
@@ -443,15 +447,24 @@ app.post('/api/LoginADM', (req, res) => {
 app.post('/api/TokenADMLogin', (req, res) => {
     const token = req.body.token
 
+    if (!token) {
+        return res.status(401).send('Token não fornecido');
+    }
+
+    let decoded;
+    try {
+        decoded = jwt.verify(token, secretKey);
+    } catch (err) {
+        return res.status(401).send('Token inválido');
+    }
+
+    const userId = decoded.userId;
+
     const sqlLoginADM = `SELECT usuario.*, permissao.plano, permissao.data
                         FROM usuario
                         INNER JOIN permissao
                         ON permissao.usuario_id = usuario.id
                         WHERE  status = 'ATIVO'`
-
-
-    const decoded = jwt.verify(token, secretKey);
-    const userId = decoded.userId;
 
 
     db.query(sqlLoginADM, [userId], (err, results) => {

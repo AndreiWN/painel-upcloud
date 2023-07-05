@@ -3,6 +3,7 @@ import { getBackupMensagem, selecionaTarefa } from "../redux/actions";
 import { connect } from 'react-redux';
 import { OverlayTrigger, Popover, Tooltip } from 'react-bootstrap';
 import { abreTarefasConfig } from "../redux/actions";
+import { obterDiaDaSemana } from "./utilitarios/obterDia";
 
 function TableContent(props) {
     const { index } = props
@@ -88,7 +89,7 @@ function TableContent(props) {
                 </td>
                 <td>{data.nome}</td>
                 <td>{formatFileSize(data.tamanho)}</td>
-                <td>{formatarDataComHora(data.execucao)}</td>
+                <td>{`${formatarDataComHora(data.execucao)} - ${obterDiaDaSemana(formatarDataComHora(data.execucao))}`}</td>
                 <td>{formatSeconds(data.tempo_total)}</td>
                 <td>{formataTipo(data.tipo_backup)}</td>
                 <td><span onClick={() => props.abreTarefasConfig(data.id, data.nome)}>{iconeEngranagem}</span></td>
@@ -108,7 +109,7 @@ function TableContent(props) {
 
                 <td className="cursor-pointer" onClick={() => props.getBackupMensagem(data.id)}>{data.nome}</td>
                 <td className="cursor-pointer" onClick={() => props.getBackupMensagem(data.id)}>{formatFileSize(data.tamanho)}</td>
-                <td className="cursor-pointer" onClick={() => props.getBackupMensagem(data.id)}>{formatarDataComHora(data.data_execucao)}</td>
+                <td className="cursor-pointer" onClick={() => props.getBackupMensagem(data.id)}>{`${formatarDataComHora(data.data_execucao)} - ${obterDiaDaSemana(formatarDataComHora(data.data_execucao))}`}</td>
                 <td className="cursor-pointer" onClick={() => props.getBackupMensagem(data.id)}>{data.hora_execucao}</td>
                 <td className="cursor-pointer" onClick={() => props.getBackupMensagem(data.id)}>{formatSeconds(data.tempo_total)}</td>
                 <td>{
