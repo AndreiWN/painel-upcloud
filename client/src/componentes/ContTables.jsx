@@ -126,9 +126,9 @@ function Tables(props) {
 
                     } aria-label="Default select example"
                         onChange={(e) => props.selecionaNumeroDeLinhas(parseInt(e.target.value), props.tarefaID, props.pagina)}>
-                        <option selected value={10}>10</option>
+                        <option value={10}>10</option>
                         <option value={20}>20</option>
-                        <option value={50}>50</option>
+                        <option selected value={50}>50</option>
                         <option value={100}>100</option>
                         <option value={1000}>1000</option>
                     </select>

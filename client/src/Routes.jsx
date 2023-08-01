@@ -10,9 +10,9 @@ function MyRoutes(props) {
 
     return (
         <Routes>
-            <Route path="/suporte" element={<Login />} />
-            <Route path="/suporte/painel" element={<App />} />
-            <Route path="/suporte/painel-adm" element={<PainelADM />} />
+            <Route path="*" element={<Login />} />
+            <Route path="/painel" element={<App />} />
+            <Route path="/painel-adm" element={<PainelADM />} />
         </Routes>
     )
 }

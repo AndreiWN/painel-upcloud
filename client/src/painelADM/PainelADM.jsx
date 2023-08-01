@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tab, Tabs } from "react-bootstrap";
+import { Button, Tab, Tabs } from "react-bootstrap";
 import { connect, useDispatch } from "react-redux";
 import Card from "../template/Card";
 import { getListaDeErros, getListaFechados, getListaTodos } from "./actions";
@@ -39,7 +39,7 @@ function PainelADM(props) {
                                 <div>
                                     <h1 className="text-4xl mb-2">Painel De Controle ADM</h1>
                                     <h2 className="text-2xl">396.5GB De 880.9GB</h2>
-                                    <h1 className="text-2xl"> Tema <span onClick={() => dispatch(trocaTema())} className='cursor-pointer'> <i class={`bi bi-${props.tema === 'claro' ? 'moon-stars' : 'sun-fill'}`}></i></span> </h1>
+                                    <h1 className="text-2xl"> Tema <span onClick={() => dispatch(trocaTema())} className='cursor-pointer'> <i className={`bi bi-${props.tema === 'claro' ? 'moon-stars' : 'sun-fill'}`}></i></span> </h1>
                                 </div>
                             </div>
                             <div className="col flex justify-center">
@@ -64,6 +64,7 @@ function PainelADM(props) {
                                 <Tab eventKey="todos" title="Todos">
                                     <TableListaTodos setModal={setShowDetalheModal} showModal={showDetalheModal} dados={props.listaTodos} />
                                 </Tab>
+
 
                             </Tabs>
                         </div>

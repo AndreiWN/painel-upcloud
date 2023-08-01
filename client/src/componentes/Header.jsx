@@ -13,7 +13,7 @@ function Header(props) {
 
     function desloga() {
         props.deslogar()
-        navigate("/suporte")
+        navigate("/")
     }
 
     const { dadosUsuario } = props

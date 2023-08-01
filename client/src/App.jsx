@@ -37,10 +37,10 @@ function App(props) {
       }).then((response) => {
         props.salvaDadosCliente(response.data)
       }).catch((e) => {
-        navigate('/suporte/painel')
+        navigate('/painel')
       })
     } else {
-      navigate('/suporte')
+      navigate('/')
     }
 
     document.title = 'Painel'

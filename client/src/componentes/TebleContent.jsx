@@ -11,7 +11,6 @@ function TableContent(props) {
 
     const iconeCorreto = <i className="bi bi-check-circle" style={{ color: props.tema === 'claro' ? 'green' : 'lime', fontSize: '1.2rem' }}></i>
     const iconeErro = <i className="bi bi-x-circle " style={{ color: props.tema === 'claro' ? 'red' : '#ff7777', fontSize: '1.2rem' }}></i>
-    const playIcon = <i className="bi bi-play-circle-fill" style={{ color: props.tema === 'claro' ? 'black' : 'white', fontSize: '1.2rem' }}></i>
     const iconeDownload = <i class="bi bi-file-arrow-down ml-1 text-green-500"></i>
     const iconeEmail = <i class="bi bi-envelope-check ml-1"></i>
     const iconeLixeira = <i class="bi bi-trash3 ml-1 text-red-500"></i>

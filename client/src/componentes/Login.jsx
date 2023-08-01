@@ -27,7 +27,7 @@ function Login(props) {
             }).then((response) => {
                 localStorage.setItem('token', response.data.token)
                 props.salvaDadosCliente(response.data)
-                navigate('/suporte/painel');
+                navigate('/painel');
             }).catch((e) => {
                 setShowAlerta(true)
             })
@@ -44,12 +44,12 @@ function Login(props) {
             }).then((response) => {
                 props.salvaDadosCliente(response.data)
                 document.title = 'Painel'
-                navigate('/suporte/painel')
+                navigate('/painel')
             }).catch((e) => {
-                navigate('/suporte')
+                navigate('/')
             })
         } else {
-            navigate('/suporte')
+            navigate('/')
         }
 
     }, [])

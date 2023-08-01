@@ -29,7 +29,7 @@ const initialState = {
     dadosTarefas: [],
     historicoTarefa: [],
     logado: false,
-    numeroLinhas: 10,
+    numeroLinhas: 50,
     pagina: 1,
     tarefaID: null,
     totalDeLinhas: null,

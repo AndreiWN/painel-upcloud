@@ -1,5 +1,6 @@
 import axios from "axios";
 import apiUrl from "../const";
+import { MD5 } from 'crypto-js';
 
 export function getListaDeErros() {
 
@@ -71,6 +72,23 @@ export function atulizaCadastroCliente(dados) {
     return async (dispatch) => {
         try {
             await axios.post(`${apiUrl}/atulizaCadastroCliente`, { dados: dados })
+            const response = await axios.post(`${apiUrl}/getTodosClientes`)
+            dispatch({ type: 'GET_LISTA_TODOS', payload: response.data.todosClientes })
+        } catch (error) {
+            dispatch({ type: "FETCH_DATA_FAILURE", payload: error.message });
+        }
+    }
+}
+
+export function insertClienteNovo(dados) {
+
+    let novaArray = dados
+
+    novaArray.senha = MD5(dados.senha).toString().toUpperCase()
+
+    return async (dispatch) => {
+        try {
+            await axios.post(`${apiUrl}/insertClienteNovo`, { dados: dados })
             const response = await axios.post(`${apiUrl}/getTodosClientes`)
             dispatch({ type: 'GET_LISTA_TODOS', payload: response.data.todosClientes })
         } catch (error) {

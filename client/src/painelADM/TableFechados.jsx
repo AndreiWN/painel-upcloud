@@ -3,7 +3,6 @@ import { Button, FormCheck } from "react-bootstrap";
 import { connect, useDispatch } from "react-redux";
 import axios from "axios";
 import { salvaDadosCliente } from "../redux/actions";
-import { useNavigate } from "react-router-dom";
 import apiUrl from "../const";
 
 function TableFechados(props) {

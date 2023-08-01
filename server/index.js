@@ -3,27 +3,73 @@ const mysql = require('mysql2')
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+// const saltRounds = 10;
+// const bcrypt = require('bcrypt');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
+function encryptPassword(password) {
+    const md5sum = crypto.createHash('md5');
+    md5sum.update(password);
+    return md5sum.digest('hex');
+}
+
 const secretKey = 'T&n!1zF2@w#yD8qR';
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'bancoteste',
-});
+// const db = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'upcloud1_user',
+//     password: 'uUQzvYw a0pmQ5KlK247xO',
+//     database: 'upcloud1_upcloud',
+// });
 
-db.connect((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('Conectado no banco com sucesso');
-});
+// db.connect((err) => {
+//     if (err) {
+//         throw err;
+//     }
+//     console.log('Conectado no banco com sucesso');
+// });
+
+const db_config = {
+    host: 'localhost',
+    user: 'upcloud1_user',
+    password: 'uUQzvYw a0pmQ5KlK247xO',
+    database: 'upcloud1_upcloud',
+};
+
+// const db_config = {
+//     host: 'localhost',
+//     user: 'root',
+//     password: '',
+//     database: 'bancoteste',
+// };
+
+let db;
+
+function createConnectionDB() {
+    db = mysql.createConnection(db_config);
+
+    db.connect(function (err) {              // The server is either down
+        if (err) {                                     // or restarting (takes a while sometimes).
+            console.log('error when connecting to db:', err);
+            setTimeout(createConnectionDB, 2000); // We introduce a delay before attempting to reconnect,
+        }                                     // to avoid a hot loop, and to allow our node script to
+    });                                     // process asynchronous requests in the meantime.
+    // If you're also serving http, display a 503 error.
+    db.on('error', function (err) {
+        console.log('db error', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+            createConnectionDB();                         // lost due to either server restart, or a
+        } else {                                      // connnection idle timeout (the wait_timeout
+            throw err;                                  // server variable configures this)
+        }
+    });
+}
+
+createConnectionDB();
 
 app.post('/api/login', (req, res) => {
     const username = req.body.emailInput;
@@ -572,6 +618,79 @@ app.post('/api/atulizaCadastroCliente', (req, res) => {
         }
     });
 })
+
+app.post('/api/insertClienteNovo', (req, res) => {
+    const data = req.body.dados;
+    const dataAtual = new Date().toISOString().split('T')[0];
+
+    const query = `INSERT INTO usuario (inscricao, nome, usuario, senha, email, email_responsavel, status, telefone, contato, whatsapp, observacao, dados_contratada, plano_contratado, contrato_assinado, estado_id, cidade_id, ultimo_acesso, tipo, versao)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 1, '0000-00-00 00:00:00', 2, '1.01.01')`;
+
+    const params = [
+        data.inscricao,
+        data.nome,
+        data.usuario,
+        data.senha,
+        data.email,
+        data.email_responsavel,
+        data.status,
+        data.telefone,
+        data.contato,
+        data.whatsapp,
+        data.observacao,
+        data.dados_contratada,
+        data.plano_contratado,
+        data.contrato_assinado
+    ];
+
+    db.query(query, params, (error, results) => {
+        if (error) {
+            console.error(error);
+            res.status(500).json({ success: false, error: 'An error occurred' });
+        } else {
+            const usuario_id = results.insertId;
+            const queryPermissao = `INSERT INTO permissao (usuario_id, plano, permissao, data, ftp_endereco, ftp_porta, ftp_usuario, espaco_total)
+          VALUES (?, ?, 'SIM', ?, '162.215.128.102', '21', ?, ?)`;
+            const paramsPermissao = [
+                usuario_id,
+                data.plano,
+                dataAtual,
+                `${data.inscricao}@upcloud.net.br`,
+                data.espaco_total
+            ];
+
+            db.query(queryPermissao, paramsPermissao, (err) => {
+                if (err) {
+                    console.error(err);
+                    res.status(500).json({ success: false, error: 'An error occurred' });
+                } else {
+                    res.json({
+                        success: true,
+                        data: {
+                            id: usuario_id,
+                            inscricao: data.inscricao,
+                            nome: data.nome,
+                            usuario: data.usuario,
+                            senha: data,
+                            email: data.email,
+                            email_responsavel: data.email_responsavel,
+                            status: data.status,
+                            telefone: data.telefone,
+                            contato: data.contato,
+                            whatsapp: data.whatsapp,
+                            observacao: data.observacao,
+                            dados_contratada: data.dados_contratada,
+                            plano_contratado: data.plano_contratado,
+                            contrat_assinado: data.contrato_assinado,
+                            plano: data.plano,
+                            espaco_total: data.espaco_total
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
 
 app.listen(14001, () => {
     console.log("Rodando na porta 14001")

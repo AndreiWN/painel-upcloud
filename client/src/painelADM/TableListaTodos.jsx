@@ -5,6 +5,8 @@ import axios from "axios";
 import { salvaDadosCliente } from "../redux/actions";
 import { getListaTodos, selecionaDetalheCliente } from "./actions";
 import apiUrl from "../const";
+import { insertClienteNovo } from "./actions";
+import ModalAdicionarCliente from "./ModalAdicionarCliente";
 
 function TableListaTodos(props) {
     const dispatch = useDispatch()
@@ -17,6 +19,7 @@ function TableListaTodos(props) {
     const theadTemaClaro = 'bg-gradient-to-tr from-gray-100 to-gray-200 border-gray-700'
     const tbodyTemaClaro = 'border-gray-700'
 
+    const [showAddModal, setShowAddModal] = useState(false)
 
     function formatarData(dataString) {
         const data = new Date(dataString);
@@ -87,7 +90,15 @@ function TableListaTodos(props) {
     }, [props.listaTodos, props.tema])
 
     return (
-        <div>
+
+        <div className="text-right">
+
+            <ModalAdicionarCliente show={showAddModal} setShow={setShowAddModal} />
+
+            <div className="text-right">
+                <Button variant="success" onClick={e => setShowAddModal(true)} className={`${props.tema === 'claro' ? 'text-black hover:bg-green-500' : ''} painelAdm-btn-addcliente text-lg `}>Adicionar Cliente</Button>
+            </div>
+
             <table className={`table max-h-96 ${props.tema === 'claro' ? tableTemaClaro : tableTemaEscuro} text-center`}>
                 <thead className={props.tema === 'claro' ? theadTemaClaro : theadTemaEscuro}>
                     <tr>

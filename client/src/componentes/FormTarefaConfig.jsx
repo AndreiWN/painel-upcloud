@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 function FormTarefaConfig(props) {
     return (
         <div className={'flex mb-3 mr-5 flex-nowrap' + props.clases} >
-            <label for="exampleFormControlInput1" className="form-label mr-3 mt-2">{props.label}</label>
+            <label htmlFor="exampleFormControlInput1" className="form-label mr-3 mt-2">{props.label}</label>
             <input type={props.type}
                 className={`form-control 
             ${props.tema === 'escuro' ? "text-slate-100 bg-slate-700 border-slate-500 focus:bg-slate-800 focus:text-slate-100" : 'focus:text-black'} ` + props.width}

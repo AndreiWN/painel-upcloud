@@ -96,6 +96,11 @@ body {
   margin-bottom: 20px;
 }
 
+.painelAdm-btn-addcliente {
+  margin-top: -80px;
+
+}
+
 /* .form-check-input {
   --bs-form-check-bg: none;
 } */
